@@ -50,7 +50,8 @@ def transcribe():
         file = open(f"uploaded_file/{files[0]}", "rb")
         transcription = openai.Audio.translate("whisper-1", file)
         session['transcription'] = transcription['text']
-        return session['transcription']
+        result = {"result": session['transcription']}
+        return jsonify(result)
     except Exception as e: 
         return e.__str__()
 
@@ -66,7 +67,8 @@ def summarize():
         )
 
         content = completion["choices"][0]["message"]["content"]
-        return content
+        result = {"result": content}
+        return jsonify(result)
     except Exception as e:
         return e.__str__()
 
@@ -94,8 +96,9 @@ def NER():
         presence_penalty=0
         )
 
-        #content = response["choices"][0]["message"]["content"]
-        return response["choices"][0]["text"].split("\n")
+        content = response["choices"][0]["text"].split("\n")
+        result = {"result": content}
+        return jsonify(result)
 
     except Exception as e:
         return e.__str__()
@@ -121,8 +124,9 @@ def sentriment_analysis():
         frequency_penalty=0,
         presence_penalty=0
         )
-
-        return response ["choices"][0]['text'].replace("\n", "")
+        content = response ["choices"][0]['text'].replace("\n", "")
+        result = {"result": content}
+        return jsonify(result)
 
     except Exception as e:
         return e.__str__()
@@ -147,8 +151,9 @@ def product_count():
         frequency_penalty=0,
         presence_penalty=0
         )
-
-        return response ["choices"][0]['text'].lstrip("\n").split("\n")
+        content = response ["choices"][0]['text'].lstrip("\n").split("\n")
+        result = {"result": content}
+        return jsonify(result)
 
     except Exception as e:
         return e.__str__()
