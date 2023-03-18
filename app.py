@@ -43,7 +43,7 @@ def upload_file():
 @cross_origin()
 def transcribe():
     try:
-        api_token = request.form["api_key"]
+        api_token = request.json["api_key"]
         session['api_key'] = api_token
         openai.api_key = api_token
         files = os.listdir("uploaded_file")
