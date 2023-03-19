@@ -13,7 +13,7 @@ os.makedirs("uploaded_file", exist_ok = True)
 def allowed_file(filename):
 	return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-@app.route('/file-upload', methods=['POST'])
+@app.route('/file-upload', methods=['GET'])
 def upload_file():
 	# check if the post request has the file part
 	if 'file' not in request.files:
@@ -37,7 +37,7 @@ def upload_file():
 		resp.status_code = 400
 		return resp
 
-@app.route('/transcription', methods=['POST'])
+@app.route('/transcription', methods=['GET'])
 @cross_origin()
 def transcribe():
     try:
@@ -53,7 +53,7 @@ def transcribe():
     except Exception as e: 
         return e.__str__()
 
-@app.route('/summarize', methods=['POST'])
+@app.route('/summarize', methods=['GET'])
 @cross_origin()
 def summarize():
     try:
@@ -70,7 +70,7 @@ def summarize():
     except Exception as e:
         return e.__str__()
 
-@app.route('/ner', methods=['POST'])
+@app.route('/ner', methods=['GET'])
 @cross_origin()
 def NER():
     try:
@@ -101,7 +101,7 @@ def NER():
     except Exception as e:
         return e.__str__()
 
-@app.route('/sentiment', methods=['POST'])
+@app.route('/sentiment', methods=['GET'])
 @cross_origin()
 def sentriment_analysis():
     try:
@@ -129,7 +129,7 @@ def sentriment_analysis():
     except Exception as e:
         return e.__str__()
 
-@app.route('/product_count', methods=['POST'])
+@app.route('/product_count', methods=['GET'])
 @cross_origin()
 def product_count():
     try:
