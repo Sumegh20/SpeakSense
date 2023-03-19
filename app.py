@@ -1,9 +1,7 @@
 import os
 import openai
-from flask import Flask, request, render_template, redirect, url_for, jsonify
-from datetime import datetime
+from flask import Flask, request, jsonify
 from flask_cors import cross_origin
-from werkzeug.utils import secure_filename
 from flask import session
 
 

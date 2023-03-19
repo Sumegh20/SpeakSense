@@ -3,9 +3,12 @@
     "version": 2,
     "builds": [{
         "src": "app.py",
-        "use": "@vercel/python"
+        "use": "@vercel/python",
+        "config": {
+            "memory": 1024
+        }
     }],
     "routes": [
-        { "src": "(.*)", "dest": "app.py" }
+        { "src": "/(.*)", "dest": "/app.py" }
     ]
 }
