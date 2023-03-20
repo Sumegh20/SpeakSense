@@ -13,11 +13,7 @@ os.makedirs("uploaded_file", exist_ok = True)
 def allowed_file(filename):
 	return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-@app.route('/')
-def home():
-    return 'Code Working'
-
-@app.route('/file-upload', methods=['GET'])
+@app.route('/file-upload', methods=['POST'])
 def upload_file():
 	# check if the post request has the file part
 	if 'file' not in request.files:
@@ -41,7 +37,7 @@ def upload_file():
 		resp.status_code = 400
 		return resp
 
-@app.route('/transcription', methods=['GET'])
+@app.route('/transcription', methods=['POST'])
 @cross_origin()
 def transcribe():
     try:
@@ -54,8 +50,12 @@ def transcribe():
         session['transcription'] = transcription['text']
         result = {"result": session['transcription']}
         return jsonify(result)
+    except KeyError as ke:
+        resp = jsonify({'message' : 'Api key is not available. Please provide api key!'})
+        return resp
     except Exception as e: 
-        return e.__str__()
+        resp = jsonify({'message' : e.__str__()})
+        return resp
 
 @app.route('/summarize', methods=['GET'])
 @cross_origin()
@@ -71,8 +71,12 @@ def summarize():
         content = completion["choices"][0]["message"]["content"]
         result = {"result": content}
         return jsonify(result)
-    except Exception as e:
-        return e.__str__()
+    except KeyError as ke:
+        resp = jsonify({'message' : 'Api key is not available. Please provide api key!'})
+        return resp
+    except Exception as e: 
+        resp = jsonify({'message' : e.__str__()})
+        return resp
 
 @app.route('/ner', methods=['GET'])
 @cross_origin()
@@ -101,9 +105,12 @@ def NER():
         content = response["choices"][0]["text"].split("\n")
         result = {"result": content}
         return jsonify(result)
-
-    except Exception as e:
-        return e.__str__()
+    except KeyError as ke:
+        resp = jsonify({'message' : 'Api key is not available. Please provide api key!'})
+        return resp
+    except Exception as e: 
+        resp = jsonify({'message' : e.__str__()})
+        return resp
 
 @app.route('/sentiment', methods=['GET'])
 @cross_origin()
@@ -129,9 +136,12 @@ def sentriment_analysis():
         content = response ["choices"][0]['text'].replace("\n", "")
         result = {"result": content}
         return jsonify(result)
-
-    except Exception as e:
-        return e.__str__()
+    except KeyError as ke:
+        resp = jsonify({'message' : 'Api key is not available. Please provide api key!'})
+        return resp
+    except Exception as e: 
+        resp = jsonify({'message' : e.__str__()})
+        return resp
 
 @app.route('/product_count', methods=['GET'])
 @cross_origin()
@@ -157,8 +167,12 @@ def product_count():
         result = {"result": content}
         return jsonify(result)
 
-    except Exception as e:
-        return e.__str__()
+    except KeyError as ke:
+        resp = jsonify({'message' : 'Api key is not available. Please provide api key!'})
+        return resp
+    except Exception as e: 
+        resp = jsonify({'message' : e.__str__()})
+        return resp
 
 
 if __name__ == "__main__":
