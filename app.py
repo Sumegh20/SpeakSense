@@ -42,7 +42,7 @@ def upload_file():
 def transcribe():
     try:
         api_token = request.json["api_key"]
-        session['api_key'] = api_token
+        # session['api_key'] = api_token
         openai.api_key = api_token
         files = os.listdir("uploaded_file")
         file = open(f"uploaded_file/{files[0]}", "rb")
@@ -57,11 +57,12 @@ def transcribe():
         resp = jsonify({'message' : e.__str__()})
         return resp
 
-@app.route('/summarize', methods=['GET'])
+@app.route('/summarize', methods=['GET', 'POST'])
 @cross_origin()
 def summarize():
     try:
-        api_token = session['api_key']
+        api_token = request.json["api_key"]
+        # api_token = session['api_key']
         openai.api_key = api_token
         completion = openai.ChatCompletion.create(
             model="gpt-3.5-turbo", 
@@ -78,11 +79,12 @@ def summarize():
         resp = jsonify({'message' : e.__str__()})
         return resp
 
-@app.route('/ner', methods=['GET'])
+@app.route('/ner', methods=['GET', 'POST'])
 @cross_origin()
 def NER():
     try:
-        api_token = session['api_key']
+        api_token = request.json["api_key"]
+        # api_token = session['api_key']
         # Prompt Engineering
         question = "Find the key entities with the entitie type using banking domain  from the followings text\n"
         training_data = "text:  Good morning Sir, this is Abhishek Mathur calling from Janta Bank. Am I speaking to Mr. Subhash Kapoor? Sir, I am Abhishek Mathur from Janta Bank. Ok, Ok, tell me Mr. Abhishek, what do you want? Sir, this is a general relationship call for your account. I hope you are happy with our service. Can I help you? Oh, thank you. You called me. I had a problem with my ATM card. I wanted to change my ATM. Can you help me? Sir, that is no problem. Do you have our app? Of course, I use it daily to check my account balance. In that case, please go to the service option in the app and there will be an option to change your ATM pin. There, please try it. Oh, thank you. You called me. I had a problem with my ATM card. I wanted to change my ATM. Can you help me? Sir, that is no problem. Do you have our app? Of course, I use it daily to check my account balance. In that case, please go to the service option in the app and there will be an option to change your ATM pin. There, please try it. Thank you.\n\nEntities:\nAbhishek Mathur : Bank Agent,\nMr. Subhash Kapoor : Bank Customer\nJanta Bank : Banking Institution\nATM card : Banking Product ATM\n\n"
@@ -112,11 +114,12 @@ def NER():
         resp = jsonify({'message' : e.__str__()})
         return resp
 
-@app.route('/sentiment', methods=['GET'])
+@app.route('/sentiment', methods=['GET', 'POST'])
 @cross_origin()
 def sentriment_analysis():
     try:
-        api_token = session['api_key']
+        api_token = request.json["api_key"]
+        # api_token = session['api_key']
         # Prompt Engineering
         question = "Generate the customer sentiment from the following test. Sentiment scale is Very Happy, Happy, Satisfied, Not Satisfied, Angry\n\n"
         end = "\n\nSentiment:\n"
@@ -143,11 +146,12 @@ def sentriment_analysis():
         resp = jsonify({'message' : e.__str__()})
         return resp
 
-@app.route('/product_count', methods=['GET'])
+@app.route('/product_count', methods=['GET', 'POST'])
 @cross_origin()
 def product_count():
     try:
-        api_token = session['api_key']
+        api_token = request.json["api_key"]
+        # api_token = session['api_key']
         # Prompt Engineering
         question = "Give number of times bank name and product name was mentioned in the following text:\n"
         final_prompt = question+session['transcription']
